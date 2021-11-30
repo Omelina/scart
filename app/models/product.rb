@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+    has_many :order_items
+    has_many :orders through: :order_items
     before_save :pyqcheck
     validates_presence_of :id, :name, :code, :price, :quantity, :active
     validate_uniqueness_of :code

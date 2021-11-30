@@ -1,5 +1,7 @@
 class Order < ApplicationRecord
-    # belongs_to :user
+    belongs_to :user
+    has_many :order_items
+    has_many :products through: :order_items
     before_save :set_default, :random
     validates_presence_of :id, :orderNumber, :user_id, :date, :total, :active
     validates_inclusion_of :active, :in => [true, false]
