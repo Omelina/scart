@@ -1,7 +1,7 @@
 class OrderItem < ApplicationRecord
     validates_presence_of :id, :order_id, :product_id, :total, :quantity
     before_save :set_default
-    validates :quantity, length: { maximum: 30 }
+    validates_numericality_of :quantity, greater_than_or_equal_to: 1
     def set_default
         :total = 0.0
     end
