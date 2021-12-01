@@ -7,7 +7,7 @@ class Product < ApplicationRecord
     validates_inclusion_of :active, :in => [true, false]
     validates :name, length: { maximum: 120 }
 
-    def pyqcheck
+    def self.pyqcheck
         validates_numericality_of :price, greater_than: 0.0
         validates_numericality_of :quantity, greater_than_or_equal_to: 1
     end

@@ -1,1 +1,1 @@
-User.create!(id:2, name: 'Oky', lastName: 'Madrigal', birthDate: '07/07/1998', password: '12345678', email: 'okymelina98@gmail.com')
+Order.create!(id:1, orderNumber: 100001, user_id: 1, date: '1/12/2021', total: 0.0, active: true)
