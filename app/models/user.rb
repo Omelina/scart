@@ -13,13 +13,6 @@ class User < ApplicationRecord
 
     scope :justactives, -> { where(:active => true)}
 
-    def self.dateformat
-        _now = Time.now.strftime("%Y-%m-%d").to_date
-        if :birthDate > :now
-            return 'Please enter a valid date'
-        end
-    end
-
     def deactivate(id)
         user = User.find(id)
         if user.active == true
@@ -33,5 +26,13 @@ class User < ApplicationRecord
         user= User.find(id)
         age= ((Time.zone.now - user.birthDate.to_time) / 1.year.seconds).floor
         return "The user #{user.name} has #{age} years old"
+    end
+
+    private
+    def dateformat
+        _now = Time.now.strftime("%Y-%m-%d").to_date
+        if :birthDate > :now
+            return 'Please enter a valid date'
+        end
     end
 end
