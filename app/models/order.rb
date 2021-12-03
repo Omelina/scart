@@ -27,8 +27,8 @@ class Order < ApplicationRecord
 
     def random 
         self.orderNumber = loop do
-           number = rand(100000..99999999)
-           break number unless Order.exists?(orderNumber: number) 
+        number = rand(100000..99999999)
+        break number unless Order.exists?(orderNumber: number) 
         end
         
     end
