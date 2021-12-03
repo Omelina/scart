@@ -35,6 +35,7 @@ group :development, :test do
   gem 'bcrypt', '~> 3.1', '>= 3.1.11'
   gem 'bootstrap', '~> 5.1.3'
   gem 'email_validator' 
+  gem 'rspec-rails', '~> 5.0.0'
 end
 
 group :development do

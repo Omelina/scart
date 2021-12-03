@@ -1,5 +1,4 @@
 class OrderItem < ApplicationRecord
-    require 'find'
     belongs_to :product
     belongs_to :order
     before_save :set_default, :actives, :productsC
@@ -10,7 +9,7 @@ class OrderItem < ApplicationRecord
     def productsC
         comp = OrderItem.select(:product_id).where(order_id: self.order_id, product_id: self.product_id)
         if comp.length() >= 1
-            errors.add(:base, "No se puede agregar un producto que ya fue agregaado a la orden")
+            errors.add(:base, "No se puede agregar un producto que ya fue agregado a la orden")
             throw(:abort)
         end
     end
