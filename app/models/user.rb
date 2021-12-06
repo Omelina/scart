@@ -8,7 +8,7 @@ class User < ApplicationRecord
     validates_length_of :name, :lastName, maximum: 120, too_long: 'Please enter a shorter name'
     validates_inclusion_of :active, :in => [true, false]
     validates :email, email: true
-    validate :dateformat
+    before_save :dateformat
 
     scope :justactives, -> { where(:active => true)}
 
@@ -22,16 +22,17 @@ class User < ApplicationRecord
     end
 
     def age(id)
-        user= User.find(id)
+        user = User.find(id)
         age= ((Time.zone.now - user.birthDate.to_time) / 1.year.seconds).floor
         return "The user #{user.name} has #{age} years old"
     end
 
     private
     def dateformat
-        _now = Time.now.strftime("%Y-%m-%d").to_date
-        if :birthDate > :now
-            return 'Please enter a valid date'
+        now = Time.now.strftime("%Y-%m-%d").to_date
+        if self.birthDate >= now
+            raise "Please enter a valid date"
+            throw(:abort)
         end
     end
 end
