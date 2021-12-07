@@ -2,12 +2,9 @@ class Order < ApplicationRecord
     belongs_to :user
     has_many :order_items
     has_many :products, through: :order_items
-    before_save :random, :setDefault, :dateformat, :checkA
+    before_save :random, :setDefault, :dateformat, :checkA, :validations
     validates_presence_of :id, :orderNumber, :user_id, :date, :total, :active
     validates_inclusion_of :active, :in => [true, false]
-    validates :orderNumber, :numericality => { greater_than: 100000}
-    validates :orderNumber, uniqueness: true
-
     
 
     def deactivate(id)
@@ -22,6 +19,11 @@ class Order < ApplicationRecord
     private
     def dateformat
         self.date = Time.now.strftime("%Y-%m-%d").to_date
+    end
+
+    def validations
+        validates :orderNumber, :numericality => { greater_than: 100000}
+        validates :orderNumber, uniqueness: true
     end
 
     def random 

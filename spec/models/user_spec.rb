@@ -23,12 +23,9 @@ RSpec.describe User, type: :model do
     user = User.new(id:3, name:"Mayra", lastName:"Castro", birthDate: "11/06/1967", password: "12345678", active:"true", email:"2doufhg")
     expect(user).to be_invalid
   end
-  #TODO this doesn't work well
-  describe ' #age' do
-    it "should show the user age " do
-      age = User.new.age(1)
-      expect(age).to be_a(Numeric)
-    end
+  it "is valid if it saves" do
+    user = User.new(id:5, name:"Mayra", lastName:"Castro", birthDate:"11/06/1967",password: "12345678", active:"true", email:"mayracastro67@gmail.com").save!
+    expect(user).to eq(true)
   end
   
 end
