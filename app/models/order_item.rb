@@ -9,7 +9,7 @@ class OrderItem < ApplicationRecord
     def productsC
         comp = OrderItem.select(:product_id).where(order_id: self.order_id, product_id: self.product_id)
         if comp.length() >= 1
-            errors.add(:base, "No se puede agregar un producto que ya fue agregado a la orden")
+            raise "No se puede agregar un producto que ya fue agregado a la orden"
             throw(:abort)
         end
     end
@@ -17,7 +17,7 @@ class OrderItem < ApplicationRecord
     def actives
         pr = Product.find_by_id(self.product_id)
         if pr.active == false
-            errors.add(:base, "Solo se pueden agregar productos")
+            raise "Solo se pueden agregar productos activos"
             throw(:abort)
         end
     end

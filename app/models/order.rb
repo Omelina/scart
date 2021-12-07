@@ -2,10 +2,12 @@ class Order < ApplicationRecord
     belongs_to :user
     has_many :order_items
     has_many :products, through: :order_items
-    before_save :random, :setDefault, :dateformat, :checkA, :validations
+    before_save :random, :setDefault, :dateformat
     validates_presence_of :id, :orderNumber, :user_id, :date, :total, :active
     validates_inclusion_of :active, :in => [true, false]
-    
+    validates :orderNumber, :numericality => { greater_than: 100000}
+    validates :orderNumber, uniqueness: true
+    validate :checkA
 
     def deactivate(id)
         o = Order.find(id)
@@ -19,11 +21,6 @@ class Order < ApplicationRecord
     private
     def dateformat
         self.date = Time.now.strftime("%Y-%m-%d").to_date
-    end
-
-    def validations
-        validates :orderNumber, :numericality => { greater_than: 100000}
-        validates :orderNumber, uniqueness: true
     end
 
     def random 
@@ -46,11 +43,10 @@ class Order < ApplicationRecord
     def checkA
         orders = Order.all
         orders.each do |o|
-            u = User.find(o.user_id)
-            if o.user_id == u.id && o.active == true 
-                return false
+            if self.user_id == o.user_id && o.active == true 
+                raise "Order cannot be saved if the user has another order active"
+                throw(:abort)
             end
-            return true
         end
     end
 
