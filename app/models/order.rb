@@ -1,4 +1,5 @@
 class Order < ApplicationRecord
+    require 'set'
     belongs_to :user
     has_many :order_items
     has_many :products, through: :order_items
@@ -11,7 +12,7 @@ class Order < ApplicationRecord
 
     def deactivate(id)
         o = Order.find(id)
-        if o.active == true
+        if o.active 
             o.update_attribute(:active, false)
         else
             "The order is already deactivated"
@@ -25,8 +26,9 @@ class Order < ApplicationRecord
 
     def random 
         self.orderNumber = loop do
-        number = rand(100000..99999999)
-        break number unless Order.exists?(orderNumber: number) 
+        max = 99999999
+        number = Enumerator.new { |r| loop { r << rand(100000..max.next) } }
+        break number unless Order.exists?(orderNumber: number.next) 
         end
         
     end
@@ -35,18 +37,15 @@ class Order < ApplicationRecord
         if order_items.count > 0
             t = order_items.sum { |obj| obj.total }
             self.total = t
-        else
-            self.total = 0.0
         end
     end
 
     def checkA
-        orders = Order.all
-        orders.each do |o|
-            if self.user_id == o.user_id && o.active == true 
-                raise "Order cannot be saved if the user has another order active"
-                throw(:abort)
-            end
+        o = Order.find_by_user_id(self.user_id)
+        if  o != nil && o.active
+            puts "entra acá"
+            raise "Order cannot be saved if the user has another order active"
+            throw(:abort)
         end
     end
 

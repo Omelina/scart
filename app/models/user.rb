@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
     def deactivate(id)
         user = User.find(id)
-        if user.active == true
+        if user.active 
             user.update_attribute(:active, false)
         else
             "The user is already deactivated"

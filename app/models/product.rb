@@ -10,7 +10,7 @@ class Product < ApplicationRecord
 
     def deactivate(id)
         pro = Product.find(id)
-        if pro.active == true
+        if pro.active 
             pro.update_attribute(:active, false)
         else
             "The product is already deactivated"
